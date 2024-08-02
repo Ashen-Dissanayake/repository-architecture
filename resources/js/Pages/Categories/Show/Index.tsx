@@ -5,10 +5,8 @@ import { Head, usePage } from "@inertiajs/react";
 import { url } from "inspector";
 import React from "react";
 
-const Index = ({ auth, category }: PageProps) => {
-   const { product } = usePage().props;
-   console.log(product);
-
+const Index = ({ auth, products, category }: PageProps) => {
+   console.log(products);
    return (
       <AuthenticatedLayout
          user={auth.user}
@@ -23,6 +21,7 @@ const Index = ({ auth, category }: PageProps) => {
          <div className="py-12">
             <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                  {}
                   <div className="flex justify-center items-center">
                      <div className="w-full rounded overflow-hidden shadow-lg">
                         <img
@@ -30,27 +29,33 @@ const Index = ({ auth, category }: PageProps) => {
                            src={``}
                            alt="Sunset in the mountains"
                         />
-                        <div className="px-6 py-4">
-                           <div className="font-bold text-xl mb-2">
-                              The Coldest Sunset
+                        <div className="flex flex-col px-6 py-4">
+                           <div className="font-bold text-xl mb-2 ">
+                              {category?.name}
+                              <p className="text-sm">{category?.description}</p>
                            </div>
-                           <p className="text-gray-700 text-base">
-                              Lorem ipsum dolor sit amet, consectetur
-                              adipisicing elit. Voluptatibus quia, nulla!
-                              Maiores et perferendis eaque, exercitationem
-                              praesentium nihil.
-                           </p>
-                        </div>
-                        <div className="px-6 pt-4 pb-2">
-                           <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-                              #photography
-                           </span>
-                           <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-                              #travel
-                           </span>
-                           <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2">
-                              #winter
-                           </span>
+                           {products?.map((product: any) => (
+                              <div
+                                 key={product.id}
+                                 className="w-3/5 flex flex-wrap justify-between self-center m-0 space-y-4"
+                              >
+                                 <p className="text-gray-700 text-base">
+                                    {product.id}
+                                 </p>
+                                 <p className="text-gray-700 text-base">
+                                    {product.name}
+                                 </p>
+                                 <p className="text-gray-700 text-base">
+                                    {product.description}
+                                 </p>
+                                 <p className="text-gray-700 text-base">
+                                    {product.price}
+                                 </p>
+                                 <p className="text-gray-700 text-base">
+                                    {product.status}
+                                 </p>
+                              </div>
+                           ))}
                         </div>
                      </div>
                   </div>
