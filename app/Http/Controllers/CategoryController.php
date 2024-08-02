@@ -60,8 +60,7 @@ class CategoryController extends Controller
    public function show(Category $category)
    {
       $products = Product::with("category")->get();
-      dd($products);
-      return Inertia::render("Categories/Show/Index", ['category' => $category]);
+      return Inertia::render("Categories/Show/Index", ['category' => $category, 'product' => $products]);
    }
 
    /**

@@ -1,32 +1,14 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { PageProps } from "@/types";
-import { Head } from "@inertiajs/react";
+import { imageUrl } from "@/utils";
+import { Head, usePage } from "@inertiajs/react";
 import { url } from "inspector";
 import React from "react";
 
 const Index = ({ auth, category }: PageProps) => {
-   const imageUrl = [
-      {
-         id: "1",
-         url: "https://i5.walmartimages.com/asr/eb866dae-bdca-47cc-9e0d-06c70cf829f4_1.3e74b748a64caa8ce84bc2c8dcf90b8f.jpeg",
-      },
-      {
-         id: "2",
-         url: "https://i5.walmartimages.com/asr/eb866dae-bdca-47cc-9e0d-06c70cf829f4_1.3e74b748a64caa8ce84bc2c8dcf90b8f.jpeg",
-      },
-      {
-         id: "3",
-         url: "https://i5.walmartimages.com/asr/eb866dae-bdca-47cc-9e0d-06c70cf829f4_1.3e74b748a64caa8ce84bc2c8dcf90b8f.jpeg",
-      },
-      {
-         id: "4",
-         url: "https://i5.walmartimages.com/asr/eb866dae-bdca-47cc-9e0d-06c70cf829f4_1.3e74b748a64caa8ce84bc2c8dcf90b8f.jpeg",
-      },
-      {
-         id: "5",
-         url: "https://i5.walmartimages.com/asr/eb866dae-bdca-47cc-9e0d-06c70cf829f4_1.3e74b748a64caa8ce84bc2c8dcf90b8f.jpeg",
-      },
-   ];
+   const { product } = usePage().props;
+   console.log(product);
+
    return (
       <AuthenticatedLayout
          user={auth.user}
@@ -45,13 +27,7 @@ const Index = ({ auth, category }: PageProps) => {
                      <div className="w-full rounded overflow-hidden shadow-lg">
                         <img
                            className="max-w-screen-sm"
-                           src={`
-                              ${imageUrl.map((url) => {
-                                 category?.id == url.id
-                                    ? console.log(url.url)
-                                    : null;
-                              })}
-                           `}
+                           src={``}
                            alt="Sunset in the mountains"
                         />
                         <div className="px-6 py-4">
