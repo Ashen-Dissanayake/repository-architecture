@@ -1,20 +1,9 @@
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { PageProps } from "@/types";
-import { Head, Link, router } from "@inertiajs/react";
-import { get } from "http";
-import path from "path";
+import { Head, Link } from "@inertiajs/react";
 import React from "react";
 
 const Index = ({ auth, categories }: PageProps) => {
-   const destroy = (id: number) => {
-      if (confirm("Are you sure you want to delete this item?")) {
-         router.delete(route("categories.destroy", id), {
-            preserveState: true,
-            preserveScroll: true,
-         });
-      }
-   };
-
    return (
       <AuthenticatedLayout
          user={auth.user}
@@ -62,7 +51,7 @@ const Index = ({ auth, categories }: PageProps) => {
                                     <td className="flex justify-evenly p-2">
                                        <a
                                           href={route(
-                                             "categories.show",
+                                             "categories.update",
                                              category.id
                                           )}
                                           className="border-2 border-green-500 rounded-lg font-bold text-green-500 transition p-2 duration-300 ease-in-out hover:bg-green-500 hover:text-white px-5"
@@ -80,9 +69,6 @@ const Index = ({ auth, categories }: PageProps) => {
                                        </a>
 
                                        <button
-                                          onClick={() => {
-                                             destroy(category.id);
-                                          }}
                                           type="button"
                                           className="bg-red-500 rounded-lg font-bold text-white text-center transitio p-3 duration-300 ease-in-out hover:bg-red-600"
                                        >

@@ -3,64 +3,100 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Product;
+use App\Repositories\Categories\CategoryInterface;
+use App\Repositories\Categories\CategoryRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
 class CategoryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        return Inertia::render("Categories/All/Index");
-    }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+   /**
+    * __construct
+    *
+    * @return void
+    */
+   // public function __construct(protected CategoryInterface $categoryInterface)
+   // {
+   // }
+   /**
+    * Display a listing of the resource.
+    */
+   public function index()
+   {
+      // $categories = app()->make(CategoryInterface::class);
+      $categories = Category::all();
+      return Inertia::render("Categories/All/Index", ["categories" => $categories]);
+   }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+   /**
+    * Show the form for creating a new resource.
+    */
+   public function create()
+   {
+      return Inertia::render("Categories/Create/Index");
+   }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Category $category)
-    {
-        //
-    }
+   /**
+    * Store a newly created resource in storage.
+    */
+   public function store(Request $request)
+   {
+      Category::create(
+         $request->validate([
+            'name' => 'required|max:255|string',
+            'description' => 'required|max:255|string',
+         ])
+      );
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Category $category)
-    {
-        //
-    }
+      return to_route("categories.index");
+   }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Category $category)
-    {
-        //
-    }
+   /**
+    * Display the specified resource.
+    */
+   public function show(Category $category)
+   {
+      $products = Product::with("category")->get();
+      dd($products);
+      return Inertia::render("Categories/Show/Index", ['category' => $category]);
+   }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Category $category)
-    {
-        //
-    }
+   /**
+    * Show the form for editing the specified resource.
+    */
+   public function edit(Category $category)
+   {
+      return Inertia::render('Categories/Edit/Index', ['category' => $category]);
+   }
+
+   /**
+    * Update the specified resource in storage.
+    */
+   public function update(Request $request, string $id)
+   {
+      $request->validate([
+         'name' => 'required|max:255|string',
+         'description' => 'required|max:255|string',
+      ]);
+
+      Category::findOrFail($id)->update([
+         'name' => $request->name,
+         'description' => $request->description,
+      ]);
+
+      return to_route('categories.index');
+   }
+
+   /**
+    * Remove the specified resource from storage.
+    */
+   public function destroy(Category $category)
+   {
+      $category->delete();
+
+      return Redirect::route('categories.index');
+   }
 }
