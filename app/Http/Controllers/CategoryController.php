@@ -18,13 +18,13 @@ class CategoryController extends Controller
     *
     * @return void
     */
-   // public function __construct(protected CategoryInterface $categoryInterface)
-   // {
-   // }
+   public function __construct(protected CategoryInterface $categoryInterface)
+   {
+   }
    /**
     * Display a listing of the resource.
     */
-   public function index(Category $category)
+   public function index()
    {
       // $categories = app()->make(CategoryInterface::class);
       $categories = Category::all();
