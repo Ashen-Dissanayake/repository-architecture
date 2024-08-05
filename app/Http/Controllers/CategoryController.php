@@ -24,7 +24,7 @@ class CategoryController extends Controller
    /**
     * Display a listing of the resource.
     */
-   public function index()
+   public function index(Category $category)
    {
       // $categories = app()->make(CategoryInterface::class);
       $categories = Category::all();
@@ -57,10 +57,10 @@ class CategoryController extends Controller
    /**
     * Display the specified resource.
     */
-   public function show(Category $category)
+   public function show(Product $product)
    {
-      $products = Product::where("category_id", $category->id)->get();
-      return Inertia::render("Categories/Show/Index", ['category' => $category, 'products' => $products]);
+      dd($product);
+      return Inertia::render("Categories/Show/Index", ['products' => $product]);
    }
 
    /**

@@ -8,7 +8,8 @@ import { Textarea } from "@headlessui/react";
 import { useForm, Head } from "@inertiajs/react";
 import React, { FormEventHandler } from "react";
 
-const index = ({ auth, category }: PageProps) => {
+const Index = ({ auth, category }: PageProps) => {
+   console.log(category);
    const { data, setData, put, processing, errors, reset } = useForm({
       name: "",
       description: "",
@@ -78,4 +79,4 @@ const index = ({ auth, category }: PageProps) => {
    );
 };
 
-export default index;
+export default Index;
