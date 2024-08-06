@@ -4,14 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Repositories\Products\ProductInterface;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
-use IntlChar;
-use Ramsey\Uuid\Type\Decimal;
 
 class ProductController extends Controller
 {
+   public function __construct(protected ProductInterface $productInterface)
+   {
+   }
    /**
     * Display a listing of the resource.
     */
