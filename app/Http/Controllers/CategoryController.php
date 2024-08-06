@@ -57,10 +57,10 @@ class CategoryController extends Controller
    /**
     * Display the specified resource.
     */
-   public function show(Product $product)
+   public function show(Category $category)
    {
-      dd($product);
-      return Inertia::render("Categories/Show/Index", ['products' => $product]);
+      $products = Product::where("category_id", $category->id)->get();
+      return Inertia::render("Categories/Show/Index", ['category' => $category, 'products' => $products]);
    }
 
    /**
