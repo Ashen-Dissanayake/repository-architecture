@@ -5,8 +5,7 @@ import { Head, usePage } from "@inertiajs/react";
 import { url } from "inspector";
 import React from "react";
 
-const Index = ({ auth, products, categoryItem }: PageProps) => {
-   console.log(categoryItem);
+const Index = ({ auth, products }: PageProps) => {
    return (
       <AuthenticatedLayout
          user={auth.user}
