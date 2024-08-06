@@ -4,20 +4,24 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Repositories\Categories\CategoryInterface;
+use App\Repositories\Products\ProductInterface;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
-use IntlChar;
-use Ramsey\Uuid\Type\Decimal;
 
 class ProductController extends Controller
 {
+   public function __construct(protected ProductInterface $productInterface)
+   {
+   }
    /**
     * Display a listing of the resource.
     */
    public function index()
    {
-      $products = Product::with('category')->get();
+      $products = $this->productInterface->all(['*'], ['category']);
+      // $products = Product::with('category')->get();
+
       return Inertia::render("Products/All/Index", ['products' => $products]);
    }
 
@@ -26,7 +30,10 @@ class ProductController extends Controller
     */
    public function create()
    {
-      $categories = Category::get(['name', 'id']);
+      $categoryInterface = app()->make(CategoryInterface::class);
+      $categories = $categoryInterface->all(['name', 'id']);
+      // $categories = Category::get(['name', 'id']);
+
       return Inertia::render('Products/Create/Index', ['categories' => $categories]);
    }
 
@@ -35,15 +42,22 @@ class ProductController extends Controller
     */
    public function store(Request $request)
    {
-      Product::create(
-         [
-            'name' => $request->name,
-            'description' => $request->description,
-            'price' => $request->price,
-            'category_id' => $request->category,
-            'status' => $request->status,
-         ]
-      );
+      $this->productInterface->create([
+         'name' => $request->name,
+         'description' => $request->description,
+         'price' => $request->price,
+         'category_id' => $request->category,
+         'status' => $request->status,
+      ]);
+      // Product::create(
+      //    [
+      //       'name' => $request->name,
+      //       'description' => $request->description,
+      //       'price' => $request->price,
+      //       'category_id' => $request->category,
+      //       'status' => $request->status,
+      //    ]
+      // );
 
       return to_route("products.index");
    }
@@ -51,6 +65,7 @@ class ProductController extends Controller
    /**
     * Display the specified resource.
     */
+   // TODO : use a Repository Function to show category of the product.
    public function show(Product $product)
    {
       return Inertia::render("Products/Show/Index", ['products' => $product]);
@@ -61,7 +76,10 @@ class ProductController extends Controller
     */
    public function edit(Product $product)
    {
-      $categoryItems = Category::get(['name', 'id']);
+      $categoryInterface = app()->make(CategoryInterface::class);
+      $categoryItems = $categoryInterface->all(['name', 'id']);
+      // $categoryItems = Category::get(['name', 'id']);
+
       return Inertia::render("Products/Edit/Index", ['product' => $product, 'categoryItems' => $categoryItems]);
    }
 
@@ -70,13 +88,20 @@ class ProductController extends Controller
     */
    public function update(Request $request, Product $product)
    {
-      Product::findOrFail($product->id)->update([
+      $this->productInterface->update($product->id, [
          'name' => $request->name,
          'description' => $request->description,
          'price' => $request->price,
          'category_id' => $request->category,
          'status' => $request->status,
       ]);
+      // Product::findOrFail($product->id)->update([
+      //    'name' => $request->name,
+      //    'description' => $request->description,
+      //    'price' => $request->price,
+      //    'category_id' => $request->category,
+      //    'status' => $request->status,
+      // ]);
 
       return to_route('products.index');
    }
@@ -86,7 +111,8 @@ class ProductController extends Controller
     */
    public function destroy(Product $product)
    {
-      $product->delete();
+      $this->productInterface->deleteById($product->id);
+      // $product->delete();
 
       return to_route('products.index');
    }
